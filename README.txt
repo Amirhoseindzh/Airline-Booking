@@ -1,10 +1,9 @@
-ایجاد نمایید  airlines_booking قبل از اجرا برنامه یک دیتابیس با نام
+Create a database named airlines_booking  before running the program
 
- یک جدول مشخصات پرواز با دو نوع فایل متنی و اس کیو ال وجود دارد یکی  را برای وارد کردن در دیتابیس انتخاب کنید    table در پوشه 	  
+ There is a flight profile table with two types( text files and SQL) in table folder . Select one to enter in the database. 
 
-"" میسازد  customers بعد از ثبت نام در برنامه خود برنامه یک جدول به اسم "" 
+ after registerin, the program Creates a table called "customers" by itself
 
-کتابخانه های زیر را باید نصب کنید   -----
+------You must install the following libraries -----
 mysql.connector
 csv 
-
