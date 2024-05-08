@@ -133,19 +133,6 @@ Airline-booking is an open-source project. I committed to a fully transparent de
 - Bug Report: If you see an error message or encounter an issue while using Amplication, please create a [bug report](https://github.com/Amirhoseindzh/Airline-Booking/issues/2#issue-2271571036).
 
 
-## Contributors
-
-<!---
-npx contributor-faces --exclude "*bot*" --limit 70 --repo "https://github.com/amplication/amplication"
-
-change the height and width for each of the contributors from 80 to 50.
---->
-
-[//]: contributor-faces
-<a href="https://github.com/Amirhoseindzh"><img src="https://avatars.githubusercontent.com/u/58592268?v=4" title="goingdust" width="50" height="50"></a>
-
-[//]: contributor-faces
-
 ## License
 
 A large part of this project is licensed under the [Apache 2.0](./LICENSE) license. 
