@@ -1,9 +1,8 @@
+from abc import ABC
 import bcrypt
 import secrets
-import datetime
 from database.db_handler import DatabaseConnector as dbconn
 from database.db_config import get_user_db_auth
-from decorators import check_email_exists
 
 NOT_INIT_CONN = "Database connection is not initialized."
 
@@ -37,8 +36,11 @@ class AuthLogin:
 
     def login(self):
         email, password = self.prompt_credentials()
-        user_data = self.verify_credentials(email)
+        if not email or not password:
+            print("Invalid email or password.")
+            return
 
+        user_data = self.verify_credentials(email)
         if not user_data:
             print("\nInvalid email or password.")
             return
@@ -57,110 +59,70 @@ class AuthLogin:
             return False
 
 
-class AuthRegister:
-    def __init__(self, auth):
+class UserRegistrationService:
+    def __init__(self, **auth):
         self.db = dbconn(**auth)
         self.db.connect()
 
-    def register(self):
-        
-        user_info = get_customer_info()
-        fullname, phone_no, city, state, email, password = user_info
+    def register_user(self, **user_info):
         if not self.db:
             print(NOT_INIT_CONN)
             return
-    
-        # Check if we already have a customer table
-        if not self.table_exists("customers"):
-            self.create_customers_table()
 
-        # Check if email address exists    
-        self.email_exists(email) #(working on issue)
-            
-        
-        # Hash the password with a random salt using bcrypt
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
+        if not self.validate_user_info(user_info):
+            print("Invalid user information.")
+            return
 
-        # Generate an OTP for email verification
-        otp = secrets.randbelow(10000)  # This should be sent to the user's email
         try:
-            # Store user details in the database
-            self.db.execute_query(
-                """INSERT INTO customers (
-                    fullname, email, phone_no, city, state, is_verified, otp,
-                    password, salt, created_at, updated_at) VALUES (
-                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                (
-                    fullname,
-                    email,
-                    phone_no,
-                    city,
-                    state,
-                    True,
-                    otp,
-                    hashed_password,
-                    salt,
-                    datetime.datetime.now(),
-                    datetime.datetime.now(),
-                ),
-            )
+            # Check if the customers table exists, create it if not
+            if not self.db.table_exists("customers"):
+                self.db.create_customers_table()
 
-            print(
-                """\nYour account has been created successfully.
-                An email has been sent for verification."""
+            fullname = user_info["fullname"]
+            phone_no = user_info["phone_no"]
+            city = user_info["city"]
+            state = user_info["state"]
+            email = user_info["email"]
+            password = user_info["password"]
+
+            if self.db.email_exists(email):
+                print("Email address already exists. Please try again.")
+                return
+            # Hash the password with a random salt using bcrypt
+            salt = bcrypt.gensalt()
+            hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
+            otp = self.generate_otp()
+            self.db.insert_user(
+                fullname, email, phone_no, city, state, hashed_password, salt, otp
             )
+            print("Your account has been created successfully.\n",
+                "An email has been sent for verification.◄")
         except Exception as e:
             print("Error registering user:", e)
 
-    def table_exists(self, table_name):
-        """True if the table exists and is not empty"""
-        if not self.db:
+    def validate_user_info(self, user_info):
+        # perform validation on the user information (e.g email address, password strength)
+        return True
+
+    def generate_otp(self):
+        # Generate an random OTP for email verification
+        return secrets.randbelow(10000)
+
+
+class AuthRegister:
+    def __init__(self, user_registration_service):
+        self.user_registration_service = user_registration_service
+
+    def register(self, **user_info):
+        # Check if the database connection is initialized
+        if not self.user_registration_service.db:
             print(NOT_INIT_CONN)
             return False
-        try:
-            result = self.db.fetch_data("SHOW TABLES LIKE %s", (table_name,))
-            if result is not None and len(result) > 0:
-                return True  # Table exists
-            else:
-                return False  # Table does not exist
-        except Exception as e:
-            print(f"Failed to get tables from database {table_name}", e)
-            return False
-
-    @check_email_exists
-    def email_exists(self, email):
-        """Check if email address already exists."""
-        return False
-
-    def create_customers_table(self):
-        """Create customers table if it doesn't exist"""
-        if not self.db:
-            print(NOT_INIT_CONN)
-            return
-        try:
-            self.db.execute_query(
-                """CREATE TABLE customers (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    fullname VARCHAR(255),
-                    email VARCHAR(255) UNIQUE,
-                    phone_no VARCHAR(255) UNIQUE,
-                    city VARCHAR(255),
-                    state VARCHAR(255),
-                    is_verified BOOLEAN,
-                    otp VARCHAR(255),
-                    password VARCHAR(255),
-                    salt VARCHAR(255),
-                    created_at DATETIME,
-                    updated_at DATETIME
-                )"""
-            )
-            print("Customers table created successfully.")
-        except Exception as e:
-            print("Error creating customers table:", e)
+        else:
+            self.user_registration_service.register_user(**user_info)
 
 
-def get_customer_info():
+def get_user_info():
     """Register a user with the given data"""
     fullname = input("\nENTER YOUR FULL NAME:-")
     phone_no = int(input("\nENTER YOUR PHONE NO:-"))
@@ -168,21 +130,30 @@ def get_customer_info():
     state = input("\nENTER YOUR STATE:-")
     email = input("\nENTER YOUR EMAIL ID:-")
     password = input("\nENTER YOUR PASSWORD:-")
-    print(f"\n ENTER OTP SENDED TO {phone_no} AND {email} (Not Configed yet)")
-    user_info = {fullname, email, password, phone_no, city, state}
+    print(f"\n > ENTER OTP SENDED TO {phone_no} AND {email} (Not Configed yet)\n")
+    user_info = {
+        "fullname": fullname,
+        "phone_no": phone_no,
+        "city": city,
+        "state": state,
+        "email": email,
+        "password": password,
+    }
     return user_info
 
 
 def main():
     """Main entry point for the application"""
-    print(f"\n{'*'*25}WELCOME TO FLIGHT BOOKING SYSTEM{'*'*25}")
+    print(f"\n{'*'*25}WELCOME TO FLIGHT BOOKING SYSTEM{'*'*25}\n")
     try:
         auth = get_user_db_auth()
+        user_registration_service = UserRegistrationService(**auth)
         # asking user if he/she already have an account or not then run the command
         acc = input("\nDO YOU HAVE AN ACCOUNT (Y/N)? ").lower()
         if acc in ["n", "no"]:
-            auth_register = AuthRegister(auth)
-            auth_register.register()
+            auth_register = AuthRegister(user_registration_service)
+            user_info = get_user_info()
+            auth_register.register(**user_info)
         elif acc in ["y", "yes"]:
             auth_login = AuthLogin(auth)
             auth_login.login()

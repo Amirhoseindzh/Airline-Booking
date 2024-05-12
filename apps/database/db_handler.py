@@ -1,4 +1,6 @@
 import mysql.connector
+from decorators import check_email_exists
+import datetime
 
 
 class DatabaseConnector:
@@ -60,7 +62,6 @@ class DatabaseConnector:
                 else:
                     self.cursor.execute(query)
                 data = self.cursor.fetchall()
-                print("Query executed successfully.")
                 return data
             else:
                 print("No connection to database.")
@@ -68,3 +69,67 @@ class DatabaseConnector:
             print(f"Error fetching data: {e}")
         finally:
             self.disconnect()
+
+    def table_exists(self, table_name):
+        try:
+            result = self.fetch_data("SHOW TABLES LIKE %s", (table_name,))
+            if result is not None and len(result) > 0:
+                return True  # Table exists
+            else:
+                return False  # Table does not exist
+        except Exception as e:
+            print(f"Failed to get tables from database {table_name}", e)
+            return False
+
+    def create_customers_table(self):
+        try:
+            self.execute_query(
+                """CREATE TABLE customers (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    fullname VARCHAR(255),
+                    email VARCHAR(255) UNIQUE,
+                    phone_no VARCHAR(255) UNIQUE,
+                    city VARCHAR(255),
+                    state VARCHAR(255),
+                    is_verified BOOLEAN,
+                    otp VARCHAR(255),
+                    password VARCHAR(255),
+                    salt VARCHAR(255),
+                    created_at DATETIME,
+                    updated_at DATETIME
+                )"""
+            )
+            print("Customers table created successfully.")
+        except Exception as e:
+            print("Error creating customers table:", e)
+
+    #@check_email_exists
+    def email_exists(self, email):
+        """Check if email address already exists."""
+        return False
+
+    def insert_user(
+        self, fullname, email, phone_no, city, state, hashed_password, salt, otp
+    ):
+        # Insert user data into the customers table
+        self.execute_query(
+            """INSERT INTO customers (
+                fullname, email, phone_no, city, state, is_verified, otp,
+                password, salt, created_at, updated_at) VALUES (
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+            (
+                fullname,
+                email,
+                phone_no,
+                city,
+                state,
+                True,
+                otp,
+                hashed_password,
+                salt,
+                datetime.datetime.now(),
+                datetime.datetime.now(),
+            ),
+        )
+
+        

@@ -12,13 +12,6 @@
     Airline Booking system with Python and MySql (terminal) 🚀</i>
 </p>
 
-<h4 align="center">
-  <a href="https://opensource.org/licenses/Apache-2.0">
-    <img src="https://img.shields.io/badge/apache%202.0-blue.svg?style=flat-square&label=license" alt="license" style="height: 20px;">
-  </a>
-</h4>
-
-
 <p align="center">
     <img src="" alt=""/>
 </p>
