@@ -1,8 +1,5 @@
 import mysql.connector
-from decorators import check_email_exists
 import datetime
-
-
 class DatabaseConnector:
     """The database connection interface"""
 
@@ -70,7 +67,11 @@ class DatabaseConnector:
         finally:
             self.disconnect()
 
+
+class Table(DatabaseConnector):
+    # table modifications
     def table_exists(self, table_name):
+        # check if table exists
         try:
             result = self.fetch_data("SHOW TABLES LIKE %s", (table_name,))
             if result is not None and len(result) > 0:
@@ -82,6 +83,7 @@ class DatabaseConnector:
             return False
 
     def create_customers_table(self):
+        # Create a table customer
         try:
             self.execute_query(
                 """CREATE TABLE customers (
@@ -103,11 +105,25 @@ class DatabaseConnector:
         except Exception as e:
             print("Error creating customers table:", e)
 
-    #@check_email_exists
+
+class Email(DatabaseConnector):
+    # email configuration
     def email_exists(self, email):
         """Check if email address already exists."""
-        return False
+        try:
+            result = self.fetch_data(
+                "SELECT COUNT(*) FROM customers WHERE email = %s", (email,)
+            )
+            if result is not None and len(result) > 0 and result[0] != (0,):
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Error fetching customers email address:", e)
 
+
+class User(DatabaseConnector):
+    # user data modification
     def insert_user(
         self, fullname, email, phone_no, city, state, hashed_password, salt, otp
     ):
@@ -131,5 +147,3 @@ class DatabaseConnector:
                 datetime.datetime.now(),
             ),
         )
-
-        

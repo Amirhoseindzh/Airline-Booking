@@ -1,12 +1,9 @@
-from abc import ABC
 import bcrypt
 import secrets
-from database.db_handler import DatabaseConnector as dbconn
+from database.db_handler import DatabaseConnector as dbconn, Email, Table, User
 from database.db_config import get_user_db_auth
 
 NOT_INIT_CONN = "Database connection is not initialized."
-
-
 class AuthLogin:
     def __init__(self, auth):
         self.db = dbconn(**auth)
@@ -63,20 +60,19 @@ class UserRegistrationService:
     def __init__(self, **auth):
         self.db = dbconn(**auth)
         self.db.connect()
+        self.table = Table(**self.db.__dict__)
+        self.user = User(**self.db.__dict__)
+        self.email = Email(**self.db.__dict__)
 
     def register_user(self, **user_info):
         if not self.db:
             print(NOT_INIT_CONN)
             return
 
-        if not self.validate_user_info(user_info):
-            print("Invalid user information.")
-            return
-
         try:
             # Check if the customers table exists, create it if not
-            if not self.db.table_exists("customers"):
-                self.db.create_customers_table()
+            if not self.table.table_exists("customers"):
+                self.table.create_customers_table()
 
             fullname = user_info["fullname"]
             phone_no = user_info["phone_no"]
@@ -85,24 +81,23 @@ class UserRegistrationService:
             email = user_info["email"]
             password = user_info["password"]
 
-            if self.db.email_exists(email):
+            if self.email.email_exists(email):
                 print("Email address already exists. Please try again.")
                 return
+
             # Hash the password with a random salt using bcrypt
             salt = bcrypt.gensalt()
             hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
             otp = self.generate_otp()
-            self.db.insert_user(
+            self.user.insert_user(
                 fullname, email, phone_no, city, state, hashed_password, salt, otp
             )
-            print("Your account has been created successfully.\n",
-                "An email has been sent for verification.◄")
+            print(
+                "Your account has been created successfully.\n",
+                "An email has been sent for verification.◄",
+            )
         except Exception as e:
             print("Error registering user:", e)
-
-    def validate_user_info(self, user_info):
-        # perform validation on the user information (e.g email address, password strength)
-        return True
 
     def generate_otp(self):
         # Generate an random OTP for email verification
@@ -150,12 +145,14 @@ def main():
         user_registration_service = UserRegistrationService(**auth)
         # asking user if he/she already have an account or not then run the command
         acc = input("\nDO YOU HAVE AN ACCOUNT (Y/N)? ").lower()
+
         if acc in ["n", "no"]:
             auth_register = AuthRegister(user_registration_service)
             user_info = get_user_info()
             auth_register.register(**user_info)
+
         elif acc in ["y", "yes"]:
-            auth_login = AuthLogin(auth)
+            auth_login = AuthLogin(**auth)
             auth_login.login()
 
     except Exception as e:

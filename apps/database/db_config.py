@@ -8,10 +8,10 @@ def get_user_db_auth():
     __database = input("DATABASE :")
 
     _db_config = {
-        "host": "localhost",
-        "user": "amir",
-        "password": "ahd$66",
-        "database": "airlines_booking",
+        "host": __host,
+        "user": __user,
+        "password": __password,
+        "database": __database,
     }
 
     return _db_config
