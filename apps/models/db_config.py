@@ -11,7 +11,7 @@ def get_user_db_auth():
         "host": __host,
         "user": __user,
         "password": __password,
-        "database": __database,
+        "database": __database, 
     }
 
     return _db_config

@@ -1,9 +1,10 @@
 import bcrypt
 import secrets
-from database.db_handler import DatabaseConnector as dbconn, Email, Table, User
-from database.db_config import get_user_db_auth
+from models.db_handler import DatabaseConnector as dbconn, Email, Table, User
+from models.db_config import get_user_db_auth
 
 NOT_INIT_CONN = "Database connection is not initialized."
+
 class AuthLogin:
     def __init__(self, auth):
         self.db = dbconn(**auth)
