@@ -1,6 +1,6 @@
 import mysql.connector
 import datetime 
-
+import logging
 class DatabaseConnector:
     """The database connection interface"""
 
@@ -79,8 +79,8 @@ class Table(DatabaseConnector):
                 return True  # Table exists
             else:
                 return False  # Table does not exist
-        except Exception as e:
-            print(f"Failed to get tables from database {table_name}", e)
+        except Exception:
+            logging.error(f"Failed to get tables from database {table_name}")
             return False
 
     def create_customers_table(self):
@@ -102,9 +102,9 @@ class Table(DatabaseConnector):
                     updated_at DATETIME
                 )"""
             )
-            print("Customers table created successfully.")
+            logging.info("Customers table created successfully.")
         except Exception as e:
-            print("Error creating customers table:", e)
+            logging.error("Error creating customers table:", exc_info=e)
 
 
 class Email(DatabaseConnector):
@@ -120,7 +120,7 @@ class Email(DatabaseConnector):
             else:
                 return False
         except Exception as e:
-            print("Error fetching customers email address:", e)
+            logging.error("Error fetching customers email address:", e)
 
 
 class User(DatabaseConnector):
