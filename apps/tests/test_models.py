@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import patch, MagicMock
 import mysql.connector
-from models.db_handler import DatabaseConnector, Table
+from models.db_handler import DatabaseConnector, Table, Email, User
 
 
-class DatabaseConnectTestCase(unittest.TestCase): 
+class DatabaseConnectTestCase(unittest.TestCase):
     @patch("mysql.connector.connect")
     def test_connect_success(self, mock_connect):
         # Setup the mock to simulate successful connection
@@ -180,7 +180,7 @@ class FetchDataTestCase(unittest.TestCase):
         db.connection = mock_connection
 
         query = "SHOW TABLES LIKE %s"
-        params = ('test_1',)
+        params = ("test_1",)
 
         # Simulate an error during query execution
         mock_cursor.execute.side_effect = mysql.connector.Error("fetching error")
@@ -200,36 +200,38 @@ class FetchDataTestCase(unittest.TestCase):
 class TableTestCase(unittest.TestCase):
     def setUp(self):
         self.table = Table(
-                host="localhost", user="root", password="password", database="test_db"
-            )
-    
-    @patch.object(Table, 'fetch_data')
+            host="localhost", user="root", password="password", database="test_db"
+        )
+        self.maxDiff = None  # Set maxDiff to None to see full diffs
+
+    @patch.object(Table, "fetch_data")
     def test_table_exists_true(self, mock_fetch_data):
         # mock the fetch_data method to return empty results
-        mock_fetch_data.return_value = [('example_table')]
-  
-        self.assertTrue(self.table.table_exists('non_existant_table'))
-    
-    @patch.object(Table, 'fetch_data')
+        mock_fetch_data.return_value = [("example_table")]
+
+        self.assertTrue(self.table.table_exists("non_existant_table"))
+
+    @patch.object(Table, "fetch_data")
     def test_table_exists_false(self, mock_fetch_data):
         mock_fetch_data.return_value = []
 
-        self.assertFalse(self.table.table_exists('example_table'))
-    
-    @patch.object(Table, 'fetch_data')
+        self.assertFalse(self.table.table_exists("example_table"))
+
+    @patch.object(Table, "fetch_data")
     def test_table_exists_exception(self, mock_fetch_data):
         # Mock the fetch_data method to raise an exception
         mock_fetch_data.side_effect = Exception("Database error")
-        
-        # Assert that table_exists returns False
-        self.assertFalse(self.table.table_exists('example_table'))
 
-    @patch.object(Table, 'execute_query')
+        # Assert that table_exists returns False
+        self.assertFalse(self.table.table_exists("example_table"))
+
+    @patch.object(Table, "execute_query")
     def test_create_customer_table_success(self, mock_execute_query):
         # Mock execute_query to simulate a successful table creation
-        mock_execute_query.return_value = None  # Normally no return value for a successful CREATE TABLE
+        # Normally no return value for a successful CREATE TABLE 
+        mock_execute_query.return_value = (None)
 
-        with self.assertLogs(level='INFO') as log:
+        with self.assertLogs(level="INFO") as log:
             # Call the create_customers_table method
             self.table.create_customers_table()
 
@@ -239,13 +241,13 @@ class TableTestCase(unittest.TestCase):
             # Check the log output for the success message
             self.assertIn("Customers table created successfully.", log.output[0])
 
-    @patch.object(Table, 'execute_query')
+    @patch.object(Table, "execute_query")
     def test_create_customers_table_failure(self, mock_execute_query):
         # Mock execute_query to raise an exception
         mock_execute_query.side_effect = Exception("Database error")
 
         # Call the create_customers_table method
-        with self.assertLogs(level='ERROR') as log:
+        with self.assertLogs(level="ERROR") as log:
             # Call the create_customers_table method
             self.table.create_customers_table()
 
@@ -257,6 +259,63 @@ class TableTestCase(unittest.TestCase):
         self.assertIn("Database error", log.output[0])
 
 
+class EmailTestCase(unittest.TestCase):
+    def setUp(self):
+        self.email = Email(
+            host="localhost", user="root", password="password", database="test_db"
+        )
+
+    @patch.object(Email, "fetch_data")
+    def test_email_exists_true(self, mock_fetch_data):
+        mock_fetch_data.return_value = [("example@example.com")]
+
+        self.assertTrue(self.email.email_exists("non_existent_email"))
+
+    @patch.object(Email, "fetch_data")
+    def test_email_exists_false(self, mock_fetch_data):
+        mock_fetch_data.return_value = []
+
+        self.assertFalse(self.email.email_exists("example@example.com"))
+
+    @patch.object(Email, "fetch_data")
+    def test_email_exists_exception(self, mock_fetch_data):
+        # Mock the fetch_data method to raise an exception
+        mock_fetch_data.side_effect = Exception("Database error")
+
+        # Assert that table_exists returns False
+        self.assertFalse(self.email.email_exists("example@example.com"))
+
+
+class UserTestCase(unittest.TestCase):
+    def setUp(self):
+        self.user = User(
+            host='localhost', user='username', password='password', database='database'
+        )
+
+    @patch.object(User, 'execute_query')    
+    def test_insert_user_success(self, mock_execute_query):
+        mock_execute_query.return_value = (None)
+         
+        params = 'fullname','email', 'phone_no', 'city', 'state', 'hashed_password', 'salt', 'otp'
+        self.user.insert_user(*params)
+
+        mock_execute_query.assert_called_once()
+    
+    @patch.object(User, 'execute_query')
+    def test_insert_user_failure(self, mock_execute_query):
+        mock_execute_query.side_effect = Exception('database error')
+        params = 'fullname','email', 'phone_no', 'city', 'state', 'hashed_password', 'salt', 'otp'
+
+        # Call the create_customers_table method
+        with self.assertLogs(level="ERROR") as log:
+            # Call the create_customers_table method
+            self.user.insert_user(*params)
+
+        # Assert that execute_query was called once
+        mock_execute_query.assert_called_once()
+
+        # Check the log output for the error message
+        self.assertIn("Failed to insert user data into database", log.output[0])
 
 
 if __name__ == "__main__":
