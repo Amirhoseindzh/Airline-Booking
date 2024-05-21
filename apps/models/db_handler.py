@@ -1,6 +1,7 @@
 import mysql.connector
 import datetime 
 import logging
+
 class DatabaseConnector:
     """The database connection interface"""
 
@@ -119,8 +120,8 @@ class Email(DatabaseConnector):
                 return True
             else:
                 return False
-        except Exception as e:
-            logging.error("Error fetching customers email address:", e)
+        except Exception:
+            logging.error("Error fetching customers email address:")
 
 
 class User(DatabaseConnector):
@@ -128,23 +129,26 @@ class User(DatabaseConnector):
     def insert_user(
         self, fullname, email, phone_no, city, state, hashed_password, salt, otp
     ):
-        # Insert user data into the customers table
-        self.execute_query(
-            """INSERT INTO customers (
-                fullname, email, phone_no, city, state, is_verified, otp,
-                password, salt, created_at, updated_at) VALUES (
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-            (
-                fullname,
-                email,
-                phone_no,
-                city,
-                state,
-                True,
-                otp,
-                hashed_password,
-                salt,
-                datetime.datetime.now(),
-                datetime.datetime.now(),
-            ),
-        )
+        try:
+            # Insert user data into the customers table
+            self.execute_query(
+                """INSERT INTO customers (
+                    fullname, email, phone_no, city, state, is_verified, otp,
+                    password, salt, created_at, updated_at) VALUES (
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (
+                    fullname,
+                    email,
+                    phone_no,
+                    city,
+                    state,
+                    True,
+                    otp,
+                    hashed_password,
+                    salt,
+                    datetime.datetime.now(),
+                    datetime.datetime.now(),
+                ),
+            )
+        except Exception:
+            logging.error("Failed to insert user data into database")
