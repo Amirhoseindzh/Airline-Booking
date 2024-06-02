@@ -1,6 +1,7 @@
 import mysql.connector
-import datetime 
+import datetime
 import logging
+
 
 class DatabaseConnector:
     """The database connection interface"""
@@ -152,3 +153,27 @@ class User(DatabaseConnector):
             )
         except Exception:
             logging.error("Failed to insert user data into database")
+
+
+class Flight(DatabaseConnector):
+    
+    def get_flight_info_by_no(self, flight_no):
+        query = """SELECT AIRLINES_NAME, DEPARTURE, DESTINATION,
+        TIME_OF_DEPARTURE, TIME_OF_ARRIVAL FROM FLIGHTS WHERE FLIGHT_NO = %s"""
+        return self.execute_query(query, (flight_no,))
+
+    def get_flight_info_by_details(self, airline_name, departure, destination):
+        query = """SELECT FLIGHT_NO, TIME_OF_DEPARTURE,
+        TIME_OF_ARRIVAL FROM FLIGHTS WHERE airlines_name = %s AND
+        DEPARTURE = %s AND DESTINATION = %s"""
+
+        return self.execute_query(
+            query, (airline_name, departure, destination)
+        )
+
+    def get_flight_charges(self, flight_no, passenger_count, class_multiplier=1.0):
+        query = "SELECT (CHARGES * %s) * %s FROM FLIGHTS WHERE FLIGHT_NO = %s"
+        return self.execute_query(
+            query, (passenger_count, class_multiplier, flight_no)
+        )
+
