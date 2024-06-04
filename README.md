@@ -9,7 +9,8 @@
 
 <div style="text-align:center">
 
-![reserve system](assets/reserve_system.png){: style="height:500px"}
+  <img src="assets/reserve_system.png" alt="Database Auth" height="500px">
+
 </div>
 
 ## Introduction
