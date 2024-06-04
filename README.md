@@ -24,18 +24,21 @@ Many components of this system are versatile and can be applied to other real-wo
 </summary> <br />
 
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 10px;">
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-        <img src="assets/reserv_system1.png" alt="Reservation System 1" style="height: 250px;">
-        <img src="assets/reserv_system4.png" alt="Reservation System 4" style="height: 400px;">
-    </div>
-    <div style="margin-center: auto;">
-        <img src="assets/reserv_system3.png" alt="Reservation System 3" style="height: 600px;">
-    </div>
-</div>
-
+<table>
+  <tr>
+    <td><img src="assets/database_auth.png" alt="Database Auth" height="200px"></td>
+    <td rowspan="3"><img src="assets/reserv_system3.png" alt="Reservation System" height="500px"></td>
+  </tr>
+  <tr>
+    <td><img src="assets/reserv_system1.png" alt="Reservation System 1" height="200px"></td>
+  </tr>
+  <tr>
+    <td><img src="assets/reserv_system4.png" alt="Reservation System 4" height="200px"></td>
+  </tr>
+</table>
     
 </details>
+
 
 ## Usage 
 
