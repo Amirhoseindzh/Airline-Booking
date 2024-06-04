@@ -7,7 +7,7 @@
      developed with Python and Mysql-Connector (Runs in terminal) 🚀</i>
 </p>
 
-<div style="text-align:center">
+<div align="center">
 
   <img src="assets/reserve_system.png" alt="Database Auth" height="500px">
 
