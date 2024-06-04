@@ -1,9 +1,8 @@
 <h1 align="center">
     <a href=""> Airline Booking System
-    <img src="">
     </a>
     <a href="">
-    <img src="">
+    <img src="![reserve seat](assets/reserve_system.png)">
     </a>
 </h1>
 
@@ -28,22 +27,16 @@ this project is developed by `python`  and you can run/use it in terminal or com
  Features
 </summary> <br />
 
-<p align="center">
-    <img width="49%" src="" alt="-"/>
-&nbsp;
-    <img width="49%" src="" alt="-"/>
+<p align="left">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    <img width="40%" src="![databse auth](assets/database_auth.png)" alt="-"/>
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <img width="30%" src="![reservation system](assets/reserv_system3.png)" alt="-"/>
 </p>
 
 <p align="center">
-    <img width="49%" src="" alt="-"/>
-&nbsp;
-    <img width="49%" src="" alt="-"/>
-</p> 
-    
-<p align="center">
-    <img width="49%" src="" alt="-"/>
-&nbsp;
-    <img width="49%" src="" alt="-"/>
+    <img width="30%" src="![reservation system](assets/reserv_system1.png)" alt="-"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <img width="25%" src="![reservation system](assets/reserv_system4.png)" alt="-"/>
 </p>
     
 </details>
