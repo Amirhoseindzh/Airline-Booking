@@ -1,25 +1,21 @@
 <h1 align="center">
-    <a href=""> Airline Booking System
-    </a>
-    <a href="">
-    <img src="![reserve seat](assets/reserve_system.png)">
-    </a>
+    <a href=""> Airline Booking System</a>
 </h1>
 
 <p align="center">
   <i align="center">
-    Airline Booking system with Python and MySql (terminal) 🚀</i>
+     developed with Python and Mysql-Connector (Runs in terminal) 🚀</i>
 </p>
 
-<p align="center">
-    <img src="" alt=""/>
-</p>
+<div style="text-align:center">
+
+![reserve system](assets/reserve_system.png){: style="height:500px"}
+</div>
 
 ## Introduction
 
-`Airline Booking` is a open-source development software about manage and order airline flying tickets and book them by user.
-
-this project is developed by `python`  and you can run/use it in terminal or command promt invironment.
+This Airline Booking System, developed in Python, runs in a terminal environment. As a freelance project,it includes various apps and classes that I am continuously enhancing with new features.
+Many components of this system are versatile and can be applied to other real-world projects. Enjoy exploring it! :)
 
 
 <details open>
@@ -27,17 +23,17 @@ this project is developed by `python`  and you can run/use it in terminal or com
  Features
 </summary> <br />
 
-<p align="left">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    <img width="40%" src="![databse auth](assets/database_auth.png)" alt="-"/>
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img width="30%" src="![reservation system](assets/reserv_system3.png)" alt="-"/>
-</p>
 
-<p align="center">
-    <img width="30%" src="![reservation system](assets/reserv_system1.png)" alt="-"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img width="25%" src="![reservation system](assets/reserv_system4.png)" alt="-"/>
-</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 10px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        <img src="assets/reserv_system1.png" alt="Reservation System 1" style="height: 250px;">
+        <img src="assets/reserv_system4.png" alt="Reservation System 4" style="height: 400px;">
+    </div>
+    <div style="margin-center: auto;">
+        <img src="assets/reserv_system3.png" alt="Reservation System 3" style="height: 600px;">
+    </div>
+</div>
+
     
 </details>
 
