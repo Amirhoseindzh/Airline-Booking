@@ -41,75 +41,64 @@ Many components of this system are versatile and can be applied to other real-wo
 </details>
 
 
-## Usage 
+## Pre-installation 
 
-To get started with Airline-Booking, first open your database and then Create a database named `airlines_booking`  before running the program.
+1. To get started with Airline-Booking, first, create a database named `airlines_booking`  before running the program.
+  - Follow the steps below :
+  ```
+  # Open your command line and login to MySQL
+> mysql -u root -p
 
-> **Note**
-> There is a flight example profile table with two types( text files and SQL) in TABLE folder. Select one of each file and then import it into the database. (just for working test) 
+# Enter your password when prompted
+# Once logged in, create the database
 
-After registerin, the program Creates a table called `customers` by itself.
+> CREATE DATABASE Airlines_booking;
 
-## Development
+# Verify the database creation
+> SHOW DATABASES;
 
-Befor you started to run a program completely you must install some libraries.
+# Select the newly created database
+> USE Airlines_booking;
 
-<details open>
-<summary>
-Pre-requisites
-</summary> <br />
-To be able to start development on Airline-Booking, make sure that you have the following prerequisties installed:
-
+  ```
 ###
+> **Note**  
+> You can create a new database using the GUI version.
+2. After clone, There is a flights table with types(txt, SQL) in folder `TABLE` . Select one and then import it into the database. (`it just for example and tests`) 
 
-- python
-- msql.connector
-- csv
+3. After registerin user, the program auto creates a table called `customers` in first time.
 
-</details>
-
-<details open>
-<summary>
-Running Airline-booking 
-</summary> <br />
-
-
-
-1. Clone the repository:
+## Installation
+1. Follow the steps below to install app perfectly:
 ```shell
-git clone https://github.com/Amirhoseindzh/Airline-Booking.git
+ > git clone https://github.com/Amirhoseindzh/Airline-Booking.git
+
+ > pip install requirements.txt
 ```
 
-The development environment should now be set up.
-</details>
 
 
 
 ## Running Tests
 
-Small summary of the kind of testing that exists in this repository 
+there is a test directory in `src/test` and created with `Unittest`.  
 
 ### Unit Tests
 
-Here is how you run unit tests :-P 
+You can run the test with Coverage and Unittest command :-P 
 
 ```
-Yes, more commands, this is the real deal now
+python -m run Unittest src/test
+#or
+coverage run -m src/test 
 ```
-
-### Integration Tests
-
-Here is how you run unit tests :-P 
-
-```
-Yes, more commands, this is the real deal now
-```
-
-
 
 ## Resources
 
 - **[YouTube](https://www.youtube.com/)** for guides.
+- **[Google](https://www.google.com/)** for guides.
+- **[Github](https://www.github.com/)** for guides.
+- Chatgpt for guides.
 
 <a name="contributing_anchor"></a>
 ## Contributing
