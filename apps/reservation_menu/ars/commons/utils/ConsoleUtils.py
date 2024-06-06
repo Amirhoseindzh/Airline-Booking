@@ -23,8 +23,6 @@ class ConsoleUtils(object):
         else:
             os.system('clear')
 
-        ConsoleUtils.print_header()
-
     @classmethod
     def println(cls, str_):
         print(str_ + ConsoleUtils.ANSI_RESET)
@@ -32,7 +30,6 @@ class ConsoleUtils(object):
     @classmethod
     def print_header(cls):
         ConsoleUtils.print_line()
-        ConsoleUtils.println("Aircraft Reservation System - v0.0.1")
         ConsoleUtils.print_line()
 
     @classmethod

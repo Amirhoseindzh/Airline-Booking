@@ -2,10 +2,7 @@ from abc import ABC, abstractmethod
 from csv import DictReader
 from csv import DictWriter
 import os
-import sys
 import logging
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'apps')))
 from models.db_handler import DatabaseConnector as dbconn, Flight
 from models.db_config import get_user_db_auth
 

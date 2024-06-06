@@ -23,7 +23,7 @@ class Database:
 
     def reserve(self, seat_number, passenger_name):
 
-        """! Save into the database the seat number and passenger name
+        """ TODO: Save into the database the seat number and passenger name
         @param seatNumber The seat number to be saved
         @param passengerName the passenger name to be saved
         """

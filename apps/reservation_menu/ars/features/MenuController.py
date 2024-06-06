@@ -9,7 +9,7 @@ class MenuController(Controller):
         ConsoleUtils.println("Home")
         ConsoleUtils.print_line()
         ConsoleUtils.println("1 - Reserve Seat")
-        ConsoleUtils.println("2 - Cancel Reservation")
+        ConsoleUtils.println("2 - Cancel Reservation (not supported yet)")
         ConsoleUtils.println("3 - Display Aircraft")
         ConsoleUtils.println("4 - List of Passengers")
         ConsoleUtils.println("5 - Exit")
