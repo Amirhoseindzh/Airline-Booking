@@ -1,11 +1,6 @@
 from abc import ABC, abstractmethod
-from csv import DictReader
-from csv import DictWriter
-import os
 import logging
 from models.db_handler import DatabaseConnector as dbconn, Flight
-from models.db_config import get_user_db_auth
-
 
 class SearchFlights:
     """TODO:
@@ -24,62 +19,6 @@ class SearchFlights:
         pass
 
 
-class PassengerData:
-    def __init__(self, name, age, gender):
-        self.name = name
-        self.age = age
-        self.gender = gender
-
-
-class Passenger:
-    def __init__(self):
-        self.passenger_data = []
-
-    def get_passenger_details(self):
-        passenger_count = int(input("\nEnter number of passengers: "))
-        for _ in range(passenger_count):
-            name = input("\nEnter name of passenger: ")
-            age = int(input(f"Enter age of {name}: "))
-            gender = input("Enter gender (Male/Female): ")
-            self.passenger_data.append(PassengerData(name, age, gender))
-
-    def save_passenger_data(self):
-        CSV_FILE = "userdata.csv"
-
-        with open(CSV_FILE, "a", newline="") as csvfile:
-            csvwriter = DictWriter(csvfile, fieldnames=["name", "age", "gender"])
-            csvwriter.writeheader()
-            for passenger in self.passenger_data:
-                csvwriter.writerow(passenger.__dict__)
-        print("\nData entered successfully.")
-    
-    def read_passenger_data(self):
-        csv_file = CsvFile()
-        csv_file.read_csv()
-        
-
-class CsvFile:
-    CSV_FILE = "userdata.csv"
-    HEADER_ROW = 'name'
-    def read_csv(self):
-        with open(self.CSV_FILE, mode="r") as csvreader:
-            reader = DictReader(csvreader)
-            for row in reader:
-                if row["name"] != self.HEADER_ROW:
-                    self.print_data(row)
-        self.remove_file()
-        self.print_separator()
-
-    def print_data(self, row):
-        print(f"name: {row['name']}, age: {row['age']}, gender: {row['gender']}")
-
-    def remove_file(self):
-        os.remove(self.CSV_FILE)
-
-    def print_separator(self):
-        print("------------------------------------")
-
-
 class Booking:
     CLASS_MULTIPLIERS = {
         1: 1.0,  # Economy
@@ -93,32 +32,12 @@ class Booking:
         self.flight = Flight(**self.db.__dict__)
 
     def book_by_flight_no(self, flight_no, passenger_count, class_no):
-        class_multiplier = self.CLASS_MULTIPLIERS.get(class_no, 1.0)
-        flight_info = self.flight.get_flight_info_by_no(flight_no)
-        if not flight_info:
-            logging.error("Flight not found.")
-            return
-
-        charges = self.flight.get_flight_charges(
-            flight_no, passenger_count, class_multiplier
-        )
-        self.print_booking_details(flight_info, passenger_count, charges, class_no)
+        """TODO: book by flight number """
 
     def book_by_details(
         self, airline_name, departure, destination, passenger_count, class_no
     ):
-        class_multiplier = self.CLASS_MULTIPLIERS.get(class_no, 1.0)
-        flight_info = self.flight.get_flight_info_by_details(
-            airline_name, departure, destination
-        )
-        if not flight_info:
-            logging.error("Flight not found.")
-            return
-
-        charges = self.flight.get_flight_charges(
-            flight_info[0][0], passenger_count, class_multiplier
-        )  # Assuming first flight
-        self.print_booking_details(flight_info, passenger_count, charges, class_no)
+        """TODO: book by some input details """
 
     def print_booking_details(self, flight_info, passenger_count, charges, class_no):
         class_names = {1: "Economy", 2: "Business", 3: "First Class"}
@@ -192,32 +111,6 @@ class CardPayment(PaymentMethod):
         int(input(PROMPT_ENTER_OTP))
         print(TRANSACTION_SUCCESS)
         print(THANK_YOU)
-
-
-# Example usage
-if __name__ == "__main__":
-    auth = get_user_db_auth()
-    booking = Booking(**auth)
-
-    # Example inputs
-    print("\nCHOOSE THE CLASS YOU WANT:-")
-    print("1.ECONOMY CLASS")
-    print("2.BUSINESS CLASS (+20% CHARGES)")
-    print("3.FIRST CLASS (+40% CHARGES)")
-    ans = 1  # or 2 for booking by details
-    cl = 1  # 1: Economy, 2: Business, 3: First Class
-    passenger = 2
-    num = "FL1234"
-    fli = ["Airline1"]
-    deplo = ["CityA"]
-    arrlo = ["CityB"]
-
-    if ans == 1:
-        booking.book_by_flight_no(num, passenger, cl)
-    elif ans == 2:
-        booking.book_by_details(fli[0], deplo[0], arrlo[0], passenger, cl)
-
-    
 
 
 # DEVELOPED BY AMIRHOSEIN DEZHABDOLLAHI (@amirhoseindzh)
