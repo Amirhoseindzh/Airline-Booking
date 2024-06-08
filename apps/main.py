@@ -15,8 +15,6 @@ class MainMenu(object):
         """
         ControllerManager().run()
 
-
-
 def clear_screen():
     if os.name == 'nt':
         os.system('cls')

@@ -5,37 +5,31 @@ from reservation_menu.ars.commons.utils.ConsoleUtils import ConsoleUtils
 from reservation_menu.ars.commons.utils.StringUtils import StringUtils
 from reservation_menu.ars.features.Controller import Controller
 
+
 class ReserveASeatController(Controller):
-
     def display(self):
-
         ConsoleUtils.println("Home >> Reserve Seat")
         ConsoleUtils.print_line()
-
         Aircraft.print()
 
-        seat_number = self.askSeatNumber()
-        passenger_name = self.askPassengerName()
-
+        seat_number = self.ask_seat_number()
+        passenger_name = self.ask_passenger_name()
         Database.get_instance().reserve(seat_number, passenger_name)
 
         return ControllerId.MENU
 
-    def askPassengerName(self):
+    def ask_passenger_name(self):
         """! Ask the passenger name. If the user provides a blank string
         a RuntimeError still be raised.
         @return the passenger name
         """
-
         passenger_name = ConsoleUtils.ask_string("Passenger Name: ")
-
         if StringUtils.is_blank(passenger_name):
             raise RuntimeError("The passenger name should not be empty")
 
         return passenger_name
 
-    def askSeatNumber(self):
-
+    def ask_seat_number(self):
         seat_number = ConsoleUtils.ask_string("Seat Number: ")
 
         if StringUtils.is_blank(seat_number):
