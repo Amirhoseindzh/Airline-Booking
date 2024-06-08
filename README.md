@@ -65,6 +65,11 @@ Many components of this system are versatile and can be applied to other real-wo
 > **Note**  
 > You can create a new database using the GUI version.
 2. After clone, There is a flights table with types(txt, SQL) in folder `TABLE` . Select one and then import it into the database. (`it just for example and tests`) 
+<div align="center">
+
+  <img src="assets/flights.png" alt="Database Auth" height="400px">
+
+</div>
 
 3. After registerin user, the program auto creates a table called `customers` in first time.
 
