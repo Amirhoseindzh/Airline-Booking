@@ -78,7 +78,7 @@ Many components of this system are versatile and can be applied to other real-wo
 ```shell
  > git clone https://github.com/Amirhoseindzh/Airline-Booking.git
 
- > pip install requirements.txt
+ > pip install -r requirements.txt
 ```
 
 
